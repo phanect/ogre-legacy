@@ -1,0 +1,31 @@
+name: build
+
+on:
+  pull_request:
+    branches: [ main ]
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+  push:
+    branches: [ main ]
+  release:
+    types: [ published ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os:
+          - windows-latest
+          - macos-latest
+          - ubuntu-latest
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: cargo build
+        run: cargo build --all --locked --verbose
