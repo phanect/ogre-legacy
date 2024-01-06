@@ -1,0 +1,11 @@
+root = true
+version = "0.0.1"
+
+[scripts]
+lint = { parallel = true }
+postlint = "tsc --noEmit && eslint . && ogre validate"
+
+[deps]
+"npm:eslint" = "8.x"
+"npm:eslint-config-phanective" = "latest"
+"npm:typescript" = { version = "5.x", consistent = true }
