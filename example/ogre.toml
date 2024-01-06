@@ -55,6 +55,7 @@ prebuild = "./scripts/prebuild.sh"
 # If `consistent = true` is set, all the workspaces using `typescript` package uses the same version of this.
 "npm:typescript" = { version = "5.x", consistent = true }
 "composer:squizlabs/php_codesniffer" = "latest"
+"command:gh" = "2.x" # Ogre also checks if shell command is installed.
 
 # Configuration for Ogre itself
 [ogre]
