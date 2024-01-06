@@ -36,7 +36,7 @@ boo = [ "./scripts/boo.js", "ogre validate" ] # Runs `node "./scripts/boo.js" &&
 # and workspaces/project-rust/ogre.toml have `build` script. If you run `ogre build` or `ogre run build`,
 # those `build` scripts runs (synchronously).
 #
-# The scripts are automatically detected by Ogre, so you don't have to add `build` here.
+# The scripts are automatically detected from each workspace by Ogre, so you don't have to add `build` here.
 # If you add `build = "some_commands"` here, Ogre raises an error to prevent overwriting `build` commands.
 # Use `prebuild` or `postbuild` hooks if you want to run any commands before or after `ogre build`.
 #

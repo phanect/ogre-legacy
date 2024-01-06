@@ -1,0 +1,51 @@
+# ✗ サブプロジェクトでのみ、内蔵の言語処理系を利用するか否かを変更したい場合
+useBuiltInEngines = false
+
+# ▲ 依存する別のサブプロジェクト
+# scripts を実行した際、依存先パッケージのスクリプトが完了してから、このパッケージのスクリプトを実行するようにする。
+# 依存先パッケージの ogre.toml に [healthCheck] が書かれていて、対象の script (on で指定されている script) を実行している場合、依存先パッケージの healthCheck が完了してからこのパッケージのスクリプトを実行する。
+dependsOn = "@ogre/backend" # or [ "@ogre/backend", "@ogre/baselib" ]
+# 特定の script の実行時のみ依存関係が必要な場合
+#dependsOn = { on = "dev", package = "@ogre/backend" } # on = [ "dev", "build" ] も OK
+# 複数指定
+#dependsOn = [
+#  { on = "dev", package = "@ogre/backend" },
+#  { on = [ "dev", "build" ], package = "@ogre/baselib" },
+#]
+
+# ▲ このサブプロジェクトのサーバーが起動しているかどうかの確認
+# Docker Compose の healthcheck を参考にした
+# https://docs.docker.com/compose/compose-file/05-services/#healthcheck
+[healthCheck]
+# ヘルスチェックを行う script 名。例えば build や lint の際にはヘルスチェックする必要はないので。
+# TODO script ごとに別のヘルスチェックを行いたい場合の考慮は必要か? 例えば、ogre dev の時は curl https://localhost:3000 でヘルスチェックをしたいが、別の script では curl https://localhost:8000 でヘルスチェックしたい、など
+on = "dev"
+#on = [ "dev", "preview" ] # 複数の script で同じヘルスチェックをする必要がある場合
+# このコマンドが exit 0 すれば起動していると見做す。失敗したら interval 後に再試行
+command = "curl -f http://localhost:3000"
+# 複数のコマンドを指定したい場合
+commands = [
+  # "and" なら両方成功していることで起動していると見做す。"or" ならどれか一つが成功していれば起動していると見做す。省略可。省略した場合のデフォルトは "and"
+  "and",
+  "curl -f http://localhost:3000",
+  "curl -f http://localhost:8080",
+  # DB の起動確認とかを想定
+]
+# スクリプトファイルを指定したい場合
+script = "./scripts/health-check.sh"
+scripts = [
+  "or",
+  "./scripts/health-check-1.ts",
+  "./scripts/health-check-2.php",
+]
+# 単位を省略して 5 などのようにした場合、デフォルトの単位は s (秒)。以下同じ。
+interval = "5s" # デフォルト: 5s
+timeout = "30s" # デフォルト: 30s
+maxRetries = 20 # デフォルトでは指定なし
+initialWait = "40s"# デフォルト: 0
+
+# ▲ パッケージマネージャーが npm scripts 相当の機能をサポートしない場合、もしくはサポートしていても、並列実行などの機能を使いたい場合。npm scripts などと併用可能だが、同名のスクリプトが両方に有る場合は、当該スクリプト実行時にエラーにする。
+[scripts]
+# In Rust projects, `build = "cargo build"` is implicitly added without any config.
+# You can overwrite it by adding `build` script here manually
+build = [ "cargo test", "cargo build" ]
