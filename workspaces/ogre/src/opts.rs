@@ -27,15 +27,6 @@ pub struct Options {
     pub unwrap_noscript: bool,
 }
 
-const ASCII: &'static str = " \
- _____     ______________    __________      ___________________    ___
-|     \\   /              \\  |          |    |                   |  |   |
-|      \\_/       __       \\_|    __    |    |    ___     ___    |__|   |
-|               |  |            |  |   |    |   |   |   |   |          |
-|   |\\     /|   |__|    _       |__|   |____|   |   |   |   |    __    |
-|   | \\___/ |          | \\                      |   |   |   |   |  |   |
-|___|       |__________|  \\_____________________|   |___|   |___|  |___|
-";
 const DEFAULT_NETWORK_TIMEOUT: u64 = 120;
 const DEFAULT_USER_AGENT: &'static str =
     "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:73.0) Gecko/20100101 Firefox/73.0";
@@ -47,7 +38,7 @@ impl Options {
         let app = App::new(env!("CARGO_PKG_NAME"))
             .version(env!("CARGO_PKG_VERSION"))
             .author(format!("\n{}\n\n", env!("CARGO_PKG_AUTHORS").replace(':', "\n")).as_str())
-            .about(format!("{}\n{}", ASCII, env!("CARGO_PKG_DESCRIPTION")).as_str())
+            .about(format!("{}", env!("CARGO_PKG_DESCRIPTION")).as_str())
             .args_from_usage("-a, --no-audio 'Removes audio sources'")
             .args_from_usage("-b, --base-url=[http://localhost/] 'Sets custom base URL'")
             .args_from_usage(
