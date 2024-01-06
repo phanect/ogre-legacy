@@ -1,0 +1,46 @@
+name: ogre
+base: core18
+adopt-info: ogre
+summary: Ogre ― A cross-language monorepo manager
+description: |
+  A cross-language monorepo manager
+
+confinement: strict
+
+architectures:
+  - build-on: amd64
+  - build-on: arm64
+  - build-on: armhf
+  - build-on: i386
+  - build-on: ppc64el
+  - build-on: s390x
+
+parts:
+  ogre:
+    plugin: rust
+    source: .
+    build-packages:
+      - libssl-dev
+      - pkg-config
+    override-pull: |
+      snapcraftctl pull
+      last_committed_tag="$(git describe --tags --abbrev=0)"
+      last_committed_tag_ver="$(echo ${last_committed_tag} | sed 's/v//')"
+      # Determine the most recent version in the beta channel in the Snap Store
+      last_released_tag="$(snap info $SNAPCRAFT_PROJECT_NAME | awk '$1 == "beta:" { print $2 }')"
+      # If the latest tag from the upstream project has not been released to
+      # beta, build that tag instead of master.
+      if [ "${last_committed_tag_ver}" != "${last_released_tag}" ]; then
+        git fetch
+        git checkout "${last_committed_tag}"
+      fi
+      # set version number of the snap based on what we did above
+      snapcraftctl set-version $(git describe --tags --abbrev=0)
+
+apps:
+  ogre:
+    command: ogre
+    plugs:
+      - home
+      - network
+      - removable-media
