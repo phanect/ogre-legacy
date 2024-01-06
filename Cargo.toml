@@ -1,0 +1,5 @@
+# Temporary Cargo config until Ogre supports automatic generation of Cargo.toml
+[workspace]
+members = [
+    "workspaces/*",
+]

@@ -1,0 +1,17 @@
+[package]
+name = "ogre"
+version = "0.1.0"
+description = "CLI tool for saving web pages as a single HTML file"
+authors = [ "Jumpei Ogawa (https://phanective.org)" ]
+license = "Apache-2.0"
+homepage = "https://github.com/phanect/ogre"
+repository = "https://github.com/phanect/ogre"
+readme = "README.md"
+keywords = [ "monorepo" ]
+categories = [ "development-tools", "development-tools::build-utils", "command-line-utilities", "config" ]
+edition = "2021"
+
+[dependencies]
+clap = { version = "4.4.12", features = ["derive"] }
+
+[dev-dependencies]

@@ -1,0 +1,20 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
+
+[*.{js,mjs,cjs,jsx,ts,tsx,vue,json,json5,html,css,sass,scss}]
+indent_style = space
+indent_size = 2
+
+[*.{rs,toml}]
+indent_style = space
+indent_size = 4
+
+[*.md]
+trim_trailing_whitespace = false
