@@ -1,0 +1,22 @@
+executables = [
+  # If scripts with the file extension "js", run it with the command "node" i.e. run `node filename.js`
+  { ext = "js", command = "node" }, # node が存在するかチェック → node "${filename}" を実行
+  # If scripts with the file extension "ts", run `nu ./runners/ts.nu`
+  { ext = "ts", script = "./scripts/runners/ts.nu" }
+]
+
+scriptsParser = "./scripts/scripts-parser.ts"
+
+# Commands or scripts to run when each `ogre` commands runs.
+[commands]
+# Run ./commands/install.nu in the npm workspace directory (PROJECT_ROOT/)
+install = "./scripts/commands/install.nu"
+update = [
+  # Any shell commands run on nushell, so `rm` works on Windows too.
+  "rm -rf ./node_modules/ package-lock.json yarn.lock pnpm-lock.yaml",
+  "npm install"
+]
+init = "npm init"
+outdated = "npm outdated"
+audit = "npm audit"
+audit__fix = "npm audit --fix"

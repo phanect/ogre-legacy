@@ -1,0 +1,12 @@
+{
+  "name": "@ogre/ext-npm",
+  "version": "0.0.0",
+  "description": "An example language extension for Ogre",
+  "author": "Jumpei Ogawa (https://phanective.org)",
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^20.10.6"
+  }
+}
