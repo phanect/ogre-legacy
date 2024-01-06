@@ -1,0 +1,67 @@
+# If this is ogre.toml is under project root, set true.
+# It prevents misusing ogre.toml in the upper directory and may improve runtime performance a little
+root = true
+
+version = "0.0.1"
+
+# List of the workspace directories
+# [ "workspaces/*" ] by default
+workspaces = [
+  "workspaces/*"
+]
+
+# Set if Ogre should automatically add .gitignore entries.
+# true, false, or "ask"
+automod = { gitignore = true }
+
+# Ogre Scripts
+[scripts]
+# This Ogre Script can be executed by `ogre lint` or `ogre run lint`.
+# When you run a command from npm, you don't need `npx` before the command names.
+lint = "tsc --noEmit && eslint . && ogre validate"
+
+# You can use array to run multiple commands.
+# The following script runs `npx eslint --fix . && ogre validate --fix`.
+fix = [ "eslint --fix .", "ogre validate --fix" ]
+
+# You can also run script files
+foo = "./scripts/foo.ts" # Runs `npx esno "./scripts/foo.ts"`
+bar = [ "./scripts/bar.rs", "./scripts/bar.sh" ] # Runs `cargo run "./scripts/bar.rs" && "./scripts/bar.sh"`
+# You can mix scripts and commands
+boo = [ "./scripts/boo.js", "ogre validate" ] # Runs `node "./scripts/boo.js" && ogre validate`
+
+# If any Ogre Scripts or similar kind of scripts (e.g. npm scripts) are available in the workspaces,
+# you can run the script of the each workspaces.
+# In this example project, workspaces/project-js/package.json, workspaces/project-php/composer.json,
+# and workspaces/project-rust/ogre.toml have `build` script. If you run `ogre build` or `ogre run build`,
+# those `build` scripts runs (synchronously).
+#
+# The scripts are automatically detected by Ogre, so you don't have to add `build` here.
+# If you add `build = "some_commands"` here, Ogre raises an error to prevent overwriting `build` commands.
+# Use `prebuild` or `postbuild` hooks if you want to run any commands before or after `ogre build`.
+#
+# However, if you want to run `build` commands parallely, you can add `{ parallel = true }` as follows.
+build = { parallel = true }
+
+# Hooks: You can run the commands or scripts before or after the Ogre scripts run.
+# the property name should be pre{SCRIPT_NAME} or post{SCRIPT_NAME}. The following hook runs before `ogre build`.
+prebuild = "./scripts/prebuild.sh"
+
+# Dependencies on the project root. These dependencies are installed as a devDependencies.
+# You have to add the name of the package managers as a prefix.
+[deps]
+"npm:eslint" = "8.x"
+"npm:eslint-config-phanective" = "latest"
+# If `consistent = true` is set, all the workspaces using `typescript` package uses the same version of this.
+"npm:typescript" = { version = "5.x", consistent = true }
+"composer:squizlabs/php_codesniffer" = "latest"
+
+# Configuration for Ogre itself
+[ogre]
+# Compatible Ogre major version.
+# If you use an unmatched major version of Ogre CLI, a warning or an error is raised.
+#
+# During 0.x versions, breaking changes may be included when the minor version is bumped up.
+# When the patch version is bumped up, there should be no breaking changes.
+# e.g. When you update from 0.1.0 to 0.2.0, there may be breaking changes, but when you update from 0.1.0 to 0.1.1, there should be no breaking changes.
+engineVersion = "0.1"

@@ -1,0 +1,11 @@
+{
+  "name": "@ogre/project-js",
+  "version": "0.0.0",
+  "description": "An example JavaScript/TypeScript project for Ogre",
+  "author": "Jumpei Ogawa (https://phanective.org)",
+  "license": "Apache-2.0",
+  "private": true,
+  "scripts": {
+    "build": "echo 'Building JavaScript project...done.'"
+  }
+}
